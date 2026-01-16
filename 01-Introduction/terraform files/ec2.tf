@@ -2,8 +2,8 @@
 resource "aws_instance" "ubuntu" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.my_instance_type
-  #user_data     = file("${path.module}/ansible-install-ubuntu.sh")       #meee, this is for the controller & thats where we are installing ansible
-  user_data = data.template_cloudinit_config.user-data.rendered
+  #user_data     = file("${path.module}/ansible-install-ubuntu.sh")     #meee, this is for the controller & thats where we are installing ansible bt i bliv his was his macbk
+  user_data = data.template_cloudinit_config.user-data.rendered     #this is in reference to the data block below
 
   key_name = var.my_key
 
@@ -36,13 +36,13 @@ resource "aws_instance" "rhel-hosts" {
 }
 
 
-data "template_cloudinit_config" "user-data" {
+data "template_cloudinit_config" "user-data" {       # we used this to be able to pass the 2 scripts
   part {
     content_type = "text/x-shellscript"
-    content      = file("${path.module}/ansible-install-ubuntu.sh")
+    content      = file("${path.module}/ansible-install-ubuntu.sh")        #script to install ubuntu
   }
   part {
     content_type = "text/x-shellscript"
-    content      = file("${path.module}/vscode-install.sh")
+    content      = file("${path.module}/vscode-install.sh")       #script to install vscode
   }
 }
