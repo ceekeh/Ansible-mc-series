@@ -2,7 +2,7 @@
 resource "aws_instance" "ubuntu" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.my_instance_type
-  #user_data     = file("${path.module}/ansible-install-ubuntu.sh")
+  #user_data     = file("${path.module}/ansible-install-ubuntu.sh")       #meee, this is for the controller & thats where we are installing ansible
   user_data = data.template_cloudinit_config.user-data.rendered
 
   key_name = var.my_key
@@ -17,7 +17,7 @@ resource "aws_instance" "ubuntu-hosts" {
   instance_type = var.my_instance_type
   user_data     = file("${path.module}/create_ansible_user.sh")
   key_name      = var.my_key
-  count         = 2
+  count         = 2                    #meee,  this means the meta argument count will create 2 ubuntu host servers
   tags = {
     "Name" = "My-Ubuntu-${count.index}"
     "Type" = "My-Ubuntu-${count.index}"
@@ -29,7 +29,7 @@ resource "aws_instance" "rhel-hosts" {
   instance_type = var.my_instance_type
   user_data     = file("${path.module}/create_ansible_user.sh")
   key_name      = var.my_key
-  count         = 1
+  count         = 1                                         #meee,  this means the meta argument count will create 1 redhat host server
   tags = {
     "Name" = "My-rhel-${count.index}"
   }
